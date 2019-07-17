@@ -17,9 +17,11 @@ import javax.swing.JOptionPane;
 
 import org.dreambot.api.methods.MethodProvider;
 
+import CaptchaApi.TwoCaptchaService;
 
 
-public class SendReq4 {
+
+public class SendReq {
     VerificationCode code = new VerificationCode(8);
 	
 	//private int day, month, year;
@@ -33,13 +35,13 @@ public class SendReq4 {
     Gui gui = new Gui();
         
 
-	public SendReq4(String password, String proxyN, String port){   //this.proxy = proxy; // String proxyN, int port
+	public SendReq(String password, String proxyN, String port){   //this.proxy = proxy; // String proxyN, int port
 		this.password = password;
 		this.proxyN = proxyN;
         this.port = port;
 	}
 	
-	public SendReq4(String password){   //this.proxy = proxy; // String proxyN, int port
+	public SendReq(String password){   //this.proxy = proxy; // String proxyN, int port
 		this.password = password;
 	}
 	
@@ -210,7 +212,7 @@ public class SendReq4 {
 
 
 	public static void setFalhas(int falhas) {
-		SendReq4.falhas = falhas;
+		SendReq.falhas = falhas;
 	}
 
 
@@ -222,7 +224,7 @@ public class SendReq4 {
 
 
 	public static void setContasCriadas(int contasCriadas) {
-		SendReq4.contasCriadas = contasCriadas;
+		SendReq.contasCriadas = contasCriadas;
 	}
 
 
@@ -234,7 +236,7 @@ public class SendReq4 {
 
 
 	public static void setPegaTextDoGui(String pegaTextDoGui) {
-		SendReq4.pegaTextDoGui = pegaTextDoGui;
+		SendReq.pegaTextDoGui = pegaTextDoGui;
 	}
 
 

@@ -1,4 +1,4 @@
-package CriadorDeContas;
+package CaptchaApi;
 import java.io.IOException;
 
 import org.dreambot.api.methods.MethodProvider;

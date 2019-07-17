@@ -1,8 +1,6 @@
 package CriadorDeContas;
 
 import java.awt.Graphics;
-import java.io.IOException;
-import java.lang.reflect.Method;
 
 import org.dreambot.api.methods.MethodProvider;
 import org.dreambot.api.script.AbstractScript;
@@ -34,14 +32,14 @@ public class Main extends AbstractScript{
 		}
 		
 
-		if(SendReq4.getContasCriadas() < gui.getPegaQtd() ) {
+		if(SendReq.getContasCriadas() < gui.getPegaQtd() ) {
 
 				try {	
 					
 					verificaProxy vp = new verificaProxy();
 					if(vp.testaConexao(proxyList.proxy.get(i), proxyList.port.get(i), gui.getProxySelected()) != "erro") {
 						MethodProvider.log("Criando a conta.");
-						SendReq4 red1 = new SendReq4("03111991Hr", proxyList.proxy.get(i), proxyList.port.get(i));
+						SendReq red1 = new SendReq("03111991Hr", proxyList.proxy.get(i), proxyList.port.get(i));
 						MethodProvider.log(proxyList.proxy.get(i) + " " + proxyList.port.get(i));
 						red1.createAccount(gui.getApiCaptcha());
 					}
@@ -67,8 +65,8 @@ public class Main extends AbstractScript{
 			 } 
 				i++; 
 				}
-		else if(SendReq4.getContasCriadas() == gui.getPegaQtd() &&
-		 SendReq4.getContasCriadas() != 0) { log("Accounts created, done");
+		else if(SendReq.getContasCriadas() == gui.getPegaQtd() &&
+		 SendReq.getContasCriadas() != 0) { log("Accounts created, done");
 		 }
 		 
 
@@ -83,8 +81,8 @@ public class Main extends AbstractScript{
 	@Override
 	public void onPaint(Graphics g) {
 		// TODO Auto-generated method stub
-		g.drawString("Accounts Created: "+SendReq4.getContasCriadas(), 30, 240);
-		g.drawString("Accounts failed : "+SendReq4.getFalhas(), 30, 260);
+		g.drawString("Accounts Created: "+SendReq.getContasCriadas(), 30, 240);
+		g.drawString("Accounts failed : "+SendReq.getFalhas(), 30, 260);
 		g.drawString("Bad Proxys : "+badproxy, 30, 280);
 	}
 
