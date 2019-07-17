@@ -16,8 +16,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JRadioButton;
-
 public class Gui extends JFrame {
 	
 	/**
