@@ -37,7 +37,7 @@ public class ProxyList {
 			try {
 				ler = new Scanner(arquivo.getSelectedFile().toString());
 				String nome = ler.nextLine(); // ler primeira linha
-				System.out.printf("\nConteúdo do arquivo texto:\n");
+				System.out.printf("\not countain text file:\n");
 				FileReader arq = new FileReader(nome);
 				BufferedReader lerArq = new BufferedReader(arq);
 				
@@ -57,7 +57,7 @@ public class ProxyList {
 				
 
 			} catch (IOException e) {
-				System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
+				System.err.printf("Error Opening file: %s.\n", e.getMessage());
 			}
 
 		}

@@ -173,7 +173,7 @@ public class SendReq {
                     {
                     		out.println(email + ":" + password);
                     } catch (IOException e) {
-                    	MethodProvider.log("Erro escreveer o arquivo");
+                    	MethodProvider.log("Error writing file");
                     }
                 }else{
                     

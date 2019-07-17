@@ -44,7 +44,7 @@ public class Main extends AbstractScript{
 						red1.createAccount(gui.getApiCaptcha());
 					}
 					else {
-						MethodProvider.log("Proxy com defeito.");
+						MethodProvider.log("Wrong/bad proxy");
 						badproxy ++;
 					}
 					
