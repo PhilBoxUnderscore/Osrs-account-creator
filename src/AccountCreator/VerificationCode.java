@@ -1,4 +1,4 @@
-package CriadorDeContas;
+package AccountCreator;
 
 public class VerificationCode {
 	private String verificationCode;

@@ -1,4 +1,4 @@
-package CriadorDeContas;
+package AccountCreator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -22,41 +22,41 @@ import CaptchaApi.TwoCaptchaService;
 
 
 public class SendReq {
-    VerificationCode code = new VerificationCode(8);
-	
+	VerificationCode code = new VerificationCode(8);
+
 	//private int day, month, year;
 	private String email;
 	private String password;
-    private String proxyN;
-    private String port;
-    public static int contasCriadas;
-    public static int falhas;
+	private String proxyN;
+	private String port;
+	public static int contasCriadas;
+	public static int falhas;
 	public static String pegaTextDoGui;
-    Gui gui = new Gui();
-        
+	Gui gui = new Gui();
+
 
 	public SendReq(String password, String proxyN, String port){   //this.proxy = proxy; // String proxyN, int port
 		this.password = password;
 		this.proxyN = proxyN;
-        this.port = port;
+		this.port = port;
 	}
-	
+
 	public SendReq(String password){   //this.proxy = proxy; // String proxyN, int port
 		this.password = password;
 	}
-	
-	
+
+
 	private String getRecaptcha(String apiKey){
 		//String googleKey = "6LccFA0TAAAAAHEwUJx_c1TfTBWMTAOIphwTtd1b"; ////6Lcsv3oUAAAAAGFhlKrkRb029OHio098bbeyi_Hv
 		String googleKey = "6Lcsv3oUAAAAAGFhlKrkRb029OHio098bbeyi_Hv"; ////
 		String pageUrl = "https://secure.runescape.com/m=account-creation/g=oldscape/create_account?trialactive=true";
 		TwoCaptchaService service = new TwoCaptchaService(apiKey, googleKey, pageUrl);
-		
+
 		try {
 			String responseToken = service.solveCaptcha();
 			MethodProvider.log("The response token is: " + responseToken);
 			if (!responseToken.contains("ERROR")){
-			return responseToken;
+				return responseToken;
 			}
 		} catch (InterruptedException e) {
 			MethodProvider.log("Error grabbing key:");
@@ -67,32 +67,32 @@ public class SendReq {
 		}
 		return null;
 	}
-	
+
 	public boolean createAccount(String apiKey) throws IOException, InterruptedException {
-  		String proxyN = this.proxyN;
-        String port = this.port;
+		String proxyN = this.proxyN;
+		String port = this.port;
 		String email = code.toString().toLowerCase()+"@gmail.com";
 		String password = this.password;
 		String recaptchaResponse = getRecaptcha(apiKey);
 		String params =
 				"theme="+"oldschool"
-				+"&trialactive="+"true"
-				+"&email1="+email
-				+"&onlyOneEmail="+"1"
-				+"&password1="+password
-				+"&onlyOnePassword"+"1"
-				+"&day="+"1"
-				+"&month="+"1"
-				+"&year="+"1991"
-				+"&create-submit=create"
-				+"&g-recaptcha-response="+recaptchaResponse;
-				
+						+"&trialactive="+"true"
+						+"&email1="+email
+						+"&onlyOneEmail="+"1"
+						+"&password1="+password
+						+"&onlyOnePassword"+"1"
+						+"&day="+"1"
+						+"&month="+"1"
+						+"&year="+"1991"
+						+"&create-submit=create"
+						+"&g-recaptcha-response="+recaptchaResponse;
+
 		MethodProvider.log(recaptchaResponse);
 		MethodProvider.log(proxyN);
 		MethodProvider.log(""+port);
-		
-		
-		
+
+
+
 		Proxy proxy = null;
 		switch (gui.getProxySelected()) {
 		case "SOCKS5":
@@ -108,18 +108,18 @@ public class SendReq {
 			proxy = null;
 			break;
 		}
-		
-		
-        //Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyN,port));
+
+
+		//Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyN,port));
 		URL obj = new URL("https://secure.runescape.com/m=account-creation/g=oldscape/create_account");
-		
+
 		HttpsURLConnection con;
 		if(gui.isCheckSelectProxies() == false) {
 			con = (HttpsURLConnection)obj.openConnection();
 		}else {
 			con = (HttpsURLConnection)obj.openConnection(proxy);
 		}
-		
+
 		String USER_AGENT = RandomUserAgent.getRandomUserAgent();
 		MethodProvider.log("User agent: " + USER_AGENT);
 		//add request header
@@ -132,80 +132,80 @@ public class SendReq {
 		con.setRequestProperty("Referer","http://oldschool.runescape.com/");
 		//Send post request
 		if ( recaptchaResponse != null && !recaptchaResponse.contains("ERROR")){
-		MethodProvider.sleep(8000, 10000);
-		//Thread.currentThread();
-		//Thread.sleep(10000);
-		con.setDoOutput(true);
-        con.setDoInput(true);
-		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		MethodProvider.log(params);
-		wr.writeBytes(params);
-		wr.flush();
-		wr.close();
+			MethodProvider.sleep(8000, 10000);
+			//Thread.currentThread();
+			//Thread.sleep(10000);
+			con.setDoOutput(true);
+			con.setDoInput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			MethodProvider.log(params);
+			wr.writeBytes(params);
+			wr.flush();
+			wr.close();
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-		
-		while((inputLine = in.readLine()) != null){
-			response.append(inputLine);
-		}
-		in.close();
-                
-               String location = con.getURL().toString();
-               
-              
-                    
-                if(location.contains("tracker")){
-                	
-                    MethodProvider.log("Account Created.");
-                    setContasCriadas(getContasCriadas() + 1);
-                    MethodProvider.log(""+getContasCriadas());
-                    
-                    String diretorio = System.getProperty("user.dir");
-                    File file = new File(diretorio,"accs.txt");
-                    if (!file.exists()){
-                    	file.createNewFile();
-                    }
-                    try(FileWriter fw = new FileWriter(file, true);
-                    		BufferedWriter bw = new BufferedWriter(fw);
-                    		PrintWriter out = new PrintWriter(bw))
-                    {
-                    		out.println(email + ":" + password);
-                    } catch (IOException e) {
-                    	MethodProvider.log("Error writing file");
-                    }
-                }else{
-                    
-                    MethodProvider.log("Failed Create Account.");
-                    setFalhas(getFalhas() + 1);
-                }
-                
-		
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while((inputLine = in.readLine()) != null){
+				response.append(inputLine);
+			}
+			in.close();
+
+			String location = con.getURL().toString();
+
+
+
+			if(location.contains("tracker")){
+
+				MethodProvider.log("Account Created.");
+				setContasCriadas(getContasCriadas() + 1);
+				MethodProvider.log(""+getContasCriadas());
+
+				String diretorio = System.getProperty("user.dir");
+				File file = new File(diretorio,"accs.txt");
+				if (!file.exists()){
+					file.createNewFile();
+				}
+				try(FileWriter fw = new FileWriter(file, true);
+						BufferedWriter bw = new BufferedWriter(fw);
+						PrintWriter out = new PrintWriter(bw))
+				{
+					out.println(email + ":" + password);
+				} catch (IOException e) {
+					MethodProvider.log("Error writing file");
+				}
+			}else{
+
+				MethodProvider.log("Failed Create Account.");
+				setFalhas(getFalhas() + 1);
+			}
+
+
 		}else
 			MethodProvider.log("Captcha was error or null, not sending post to osrs servers");
-			return true;
+		return true;
 	}
-	
+
 
 	public String getEmail(){
 		return email;
 	}
-	
+
 	public String getPassword(){
 		return password;
 	}
 
-         public String getProxyN() {
-        return proxyN;
-    }
+	public String getProxyN() {
+		return proxyN;
+	}
 
-    public void setProxyN(String proxyN) {
-        this.proxyN = proxyN;
-    }
+	public void setProxyN(String proxyN) {
+		this.proxyN = proxyN;
+	}
 
 
-    public static int getFalhas() {
+	public static int getFalhas() {
 		return falhas;
 	}
 
@@ -240,14 +240,14 @@ public class SendReq {
 	}
 
 
-    
-    
-    void createAccount(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
-    
-    
-    
+
+
+	void createAccount(int i) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+
+
+
+
 }

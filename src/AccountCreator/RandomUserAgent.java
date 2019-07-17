@@ -1,4 +1,4 @@
-package CriadorDeContas;
+package AccountCreator;
 
 import java.util.HashMap;
 import java.util.Map;
